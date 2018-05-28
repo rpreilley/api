@@ -4,7 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+var session = require('express-session');
 
+// Routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
 var loginRouter = require('./routes/login');
@@ -17,6 +19,19 @@ mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/login', { promiseLibrary: require('bluebird') })
   .then(() =>  console.log('MongoDB connection was succesful'))
   .catch((err) => console.error(err));
+
+// Express Session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    secure: false,
+    maxAge: null
+  }
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +50,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler

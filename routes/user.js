@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var User = require('../models/User.js');
+var User = require('../models/user.js');
 var authWall = require('../lib/auth_wall');
 
 /* GET ALL USERS */
-router.get('/', authWall, function(req, res, next) {
+router.get('/', function(req, res, next) {
   User.find(function (err, user) {
     if (err) return next(err);
     res.json(user);
@@ -31,10 +31,15 @@ router.post('/signup', function(req, res, next) {
 
 /* LOGIN USER */
 router.post('/login', function(req, res, next) {
-  console.log(req.body)
-  User.create(req.body, function (err, user) {
-    if (err) return next(err);
-    res.json(user);
+  User.findOne({ email: req.body.email }).exec(function(err, user) {
+    user.comparePassword(req.body.password, function(err, isMatch) {
+      if (isMatch) {
+        req.session.currentUserID = user.id;
+        console.log(req.session);
+      }
+      console.log('is match', isMatch);
+      res.json(user);
+    });
   });
 });
 
