@@ -36,9 +36,12 @@ router.post('/login', function(req, res, next) {
       if (isMatch) {
         req.session.currentUserID = user.id;
         console.log(req.session);
+        console.log('is match', isMatch);
+        res.json(user);
       }
-      console.log('is match', isMatch);
-      res.json(user);
+      if (err) {
+        res.send("There was an issue logging in. Please try again.")
+      }
     });
   });
 });
