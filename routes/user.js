@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/user.js');
-var authWall = require('../lib/auth_wall');
 
 /* GET ALL USERS */
 router.get('/', function(req, res, next) {
