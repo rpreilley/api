@@ -16,7 +16,10 @@ var app = express();
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://localhost/login', { promiseLibrary: require('bluebird') })
+mongoose.connect('mongodb://localhost/login', { 
+  promiseLibrary: require('bluebird'),
+  useNewUrlParser: true
+  })
   .then(() =>  console.log('MongoDB connection was succesful'))
   .catch((err) => console.error(err));
 
