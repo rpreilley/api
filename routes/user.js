@@ -36,10 +36,17 @@ router.post('/login', function(req, res, next) {
         req.session.currentUserID = user.id;
         console.log(req.session);
         console.log('is match', isMatch);
-        res.json(user);
+        res.json(200,
+          {
+            ret: user,
+            msg: "Login successful."
+          }
+        );
+      } else {
+        res.json(400, { msg: "Invalid email or password. Please try again." });
       }
       if (err) {
-        res.send("There was an issue logging in. Please try again.")
+        res.json(400, { msg: "There was an issue logging in. Please try again." });
       }
     });
   });
